@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./src/routes/auth.route.js";
 import workDayRoutes from "./src/routes/workDay.route.js";
 import activityRecordRoutes from "./src/routes/activityRecord.route.js";
+import userProfileRoutes from "./src/routes/user.route.js"
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/work-day" , workDayRoutes);
 app.use("/api/activity-record" , activityRecordRoutes);
+app.use("/api/user" , userProfileRoutes);
 
 const PORT = process.env.PORT || 3000;
 
