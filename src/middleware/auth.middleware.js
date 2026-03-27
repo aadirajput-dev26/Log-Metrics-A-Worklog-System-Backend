@@ -21,7 +21,7 @@ export const protectRoute = async (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        req.userId = user._id;
+        req.userId = decodedToken.userId;
         next();
     } catch (error) {
         console.error("Error in protectRoute middleware", error);

@@ -28,5 +28,4 @@ const activityRecordSchema = new mongoose.Schema({
     timestamps : true
 });
 
-const ActivityRecord = mongoose.model("ActivityRecord", activityRecordSchema);
-export default ActivityRecord;
+export const ActivityRecord = mongoose.model("ActivityRecord", activityRecordSchema);
