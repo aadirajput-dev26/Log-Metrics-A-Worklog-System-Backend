@@ -1,0 +1,29 @@
+{
+  "name": "logmetrics-backend",
+  "version": "1.0.0",
+  "description": "Log-Metrics is a worklog management system that enables users to log their daily work and submit reports to their manager",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "backend",
+    "mongoDB"
+  ],
+  "author": "Aadityaraj Singh Mandloi",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.2",
+    "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0"
+  }
+}
