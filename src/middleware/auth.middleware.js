@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.js";
+import { User } from "../models/user.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -21,7 +21,7 @@ export const protectRoute = async (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        req.user = user;
+        req.userId = user._id;
         next();
     } catch (error) {
         console.error("Error in protectRoute middleware", error);

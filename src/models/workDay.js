@@ -7,7 +7,7 @@ const workDaySchema = new mongoose.Schema({
         required : true
     },
     workDate : {
-        type : Date,
+        type : String,
         required : true
     },
     dayStatus : {
@@ -21,12 +21,10 @@ const workDaySchema = new mongoose.Schema({
         required : true
     },
     dayEndTime : {
-        type : String,
-        required : true
+        type : String
     }
 }, {
     timestamps : true
 });
 
-const WorkDay = mongoose.model("WorkDay", workDaySchema);
-export default WorkDay;
+export const WorkDay = mongoose.model("WorkDay", workDaySchema);
