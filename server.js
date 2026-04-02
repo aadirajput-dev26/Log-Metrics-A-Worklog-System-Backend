@@ -8,6 +8,8 @@ import activityRecordRoutes from "./src/routes/activityRecord.route.js";
 import userProfileRoutes from "./src/routes/user.route.js"
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -17,9 +19,4 @@ app.use("/api/work-day" , workDayRoutes);
 app.use("/api/activity-record" , activityRecordRoutes);
 app.use("/api/user" , userProfileRoutes);
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-    connectDB();
-});
+export default app;
