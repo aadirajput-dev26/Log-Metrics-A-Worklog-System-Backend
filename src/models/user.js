@@ -13,11 +13,11 @@ const userSchema = new mongoose.Schema({
     },
     password : {
         type : String,
-        required : true
+        required : false
     },
     product : {
         type : String,
-        required : true
+        required : false
     },
     userRole : {
         type: String,

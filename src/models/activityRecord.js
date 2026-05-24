@@ -20,7 +20,7 @@ const activityRecordSchema = new mongoose.Schema({
     },
     activityType : {
         type : String, 
-        enum : ["TASK" , "BREAK"],
+        enum : ["TASK", "BREAK", "MEETING", "LEARNING", "PLANNING"],
         default : "TASK",
         required : true,
     }
