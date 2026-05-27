@@ -46,11 +46,12 @@ export const signup = async (req, res) => {
         // if new user is created, then create a new token for other api to run
         if(newUser){
             const savedUser = await newUser.save();
-            generateToken(savedUser._id, res);
+            const token = generateToken(savedUser._id, res);
 
             res.status(201).json({
                 message : "User created successfully",
                 success : true,
+                token
             })
         } else {
             return res.status(400).json({
@@ -89,12 +90,13 @@ export const login = async (req, res) => {
         }
 
         // generate token
-        generateToken(user._id, res);
+        const token = generateToken(user._id, res);
 
         // send response
         res.status(200).json({
             message : "User logged in successfully",
             success : true,
+            token
         })
     } catch (error) {
         console.log("Error in login controller", error);
@@ -211,7 +213,7 @@ export const googleAuth = async (req, res) => {
             await user.save();
         }
         
-        generateToken(user._id, res);
+        const token = generateToken(user._id, res);
         
         // If username starts with user_, they haven't set a real username yet
         const needsUsername = user.userName.startsWith('user_');
@@ -220,7 +222,8 @@ export const googleAuth = async (req, res) => {
             success: true, 
             message: "Authentication successful",
             user,
-            needsUsername
+            needsUsername,
+            token
         });
     } catch (error) {
         console.error("Error in googleAuth controller", error);
