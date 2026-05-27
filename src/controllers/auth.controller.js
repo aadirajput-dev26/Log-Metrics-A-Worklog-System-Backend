@@ -1,6 +1,9 @@
 import { User } from "../models/user.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
+import { OAuth2Client } from "google-auth-library";
+
+const googleClient = new OAuth2Client();
 
 export const signup = async (req, res) => {
     const { email, userName, password , product , role } = req.body;
@@ -170,10 +173,25 @@ export const setUsername = async (req, res) => {
 }
 
 export const googleAuth = async (req, res) => {
-    const { email, name } = req.body;
+    const { credential } = req.body;
     try {
+        if (!credential) {
+            return res.status(400).json({ success: false, message: "Credential token is required" });
+        }
+        
+        // Verify Google ID token
+        const ticket = await googleClient.verifyIdToken({
+            idToken: credential,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+        const payload = ticket.getPayload();
+        if (!payload) {
+            return res.status(400).json({ success: false, message: "Invalid Google token payload" });
+        }
+
+        const { email, name } = payload;
         if (!email) {
-            return res.status(400).json({ success: false, message: "Email is required" });
+            return res.status(400).json({ success: false, message: "Email not found in Google token" });
         }
         
         let user = await User.findOne({ email });
