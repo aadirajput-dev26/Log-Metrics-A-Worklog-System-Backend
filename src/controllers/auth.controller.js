@@ -180,10 +180,14 @@ export const googleAuth = async (req, res) => {
         }
         
         // Verify Google ID token
-        const ticket = await googleClient.verifyIdToken({
+        const verifyOptions = {
             idToken: credential,
-            audience: process.env.GOOGLE_CLIENT_ID
-        });
+        };
+        if (process.env.GOOGLE_CLIENT_ID) {
+            verifyOptions.audience = process.env.GOOGLE_CLIENT_ID;
+        }
+        
+        const ticket = await googleClient.verifyIdToken(verifyOptions);
         const payload = ticket.getPayload();
         if (!payload) {
             return res.status(400).json({ success: false, message: "Invalid Google token payload" });
