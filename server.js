@@ -11,7 +11,10 @@ import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-connectDB();
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 app.use(express.json());
 app.use(cookieParser());
