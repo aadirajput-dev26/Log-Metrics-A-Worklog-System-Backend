@@ -10,7 +10,9 @@ import publicRoutes from "./src/routes/public.route.js"
 import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
+
+console.log("Server is starting at port", PORT);
 app.use(async (req, res, next) => {
   await connectDB();
   next();
@@ -21,7 +23,8 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     "https://log-metrics.vercel.app",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "*"
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],

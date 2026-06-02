@@ -78,3 +78,25 @@ export const updateActivityRecord = async (req, res) => {
         return res.status(500).json({ message : "Internal Server Error" });
     }
 }
+
+export const deleteActivityRecord = async (req, res) => {
+    const activityRecordId = req.params.id;
+    
+    try {
+        if (!activityRecordId) {
+            return res.status(400).json({ message: "Activity record ID is required" });
+        }
+        
+        // find the activity record
+        const deletedActivityRecord = await ActivityRecord.findByIdAndDelete(activityRecordId);
+        
+        if (!deletedActivityRecord) {
+            return res.status(404).json({ message: "Activity record not found" });
+        }
+        
+        return res.status(200).json({ message: "Activity record deleted successfully", deletedActivityRecord });
+    } catch (error) {
+        console.log("Error in deleteActivityRecord controller:", error);
+        return res.status(500).json({ message : "Internal Server Error" });
+    }
+}
