@@ -10,7 +10,7 @@ export const signup = async (req, res) => {
 
     try{
         // check if all the required fields are provided
-        if(!email || !userName || !password || !product || !role){
+        if(!email || !password || !product || !role){
             return res.status(400).json({success: false, message: "All fields are required"});
         }
 
@@ -35,12 +35,15 @@ export const signup = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        // Use provided username or generate a temporary one
+        const finalUserName = userName || `user_${Date.now()}`;
+
         const newUser = new User({
-            userName,
+            userName: finalUserName,
             email,
             password: hashedPassword,
             product,
-            role
+            userRole: role
         })
 
         // if new user is created, then create a new token for other api to run
@@ -51,7 +54,8 @@ export const signup = async (req, res) => {
             res.status(201).json({
                 message : "User created successfully",
                 success : true,
-                token
+                token,
+                needsUsername: !userName
             })
         } else {
             return res.status(400).json({
@@ -144,10 +148,10 @@ export const checkUsername = async (req, res) => {
 }
 
 export const setUsername = async (req, res) => {
-    const { userName, email } = req.body;
+    const { userName , email } = req.body;
     try {
         if (!userName || !email) {
-            return res.status(400).json({ success: false, message: "Username and email are required" });
+            return res.status(400).json({ success: false, message: "Username is required" });
         }
         
         // First check if username is taken
