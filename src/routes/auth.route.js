@@ -6,7 +6,7 @@ router.post("/signup" , signup);
 router.post("/login", login);
 router.post("/logout", logout);
 
-router.post("/check-username", checkUsername);
+router.get("/check-username", checkUsername);
 router.post("/set-username", setUsername);
 router.post("/google", googleAuth);
 

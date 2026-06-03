@@ -10,9 +10,11 @@ import publicRoutes from "./src/routes/public.route.js"
 import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
-console.log("Server is starting at port", PORT);
+app.listen(PORT, () => {
+  console.log(`Server is running on ${PORT}`);
+})
 app.use(async (req, res, next) => {
   await connectDB();
   next();

@@ -124,7 +124,7 @@ export const logout = async (_ , res) => {
 }
 
 export const checkUsername = async (req, res) => {
-    const { userName } = req.params;
+    const { userName } = req.query;
     try {
         if (!userName) {
             return res.status(400).json({ success: false, message: "Username is required" });
