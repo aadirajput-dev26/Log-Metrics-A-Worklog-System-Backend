@@ -90,13 +90,22 @@ export const updateWorkDay = async (req , res) => {
 
 export const getTodayWorkDay = async (req, res) => {
     const userId = req.userId;
-    const today = new Date();
-    const workDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    // Use the workDate provided by the client, or fallback to server's today
+    const { workDate: clientWorkDate } = req.query;
+    let workDate;
+    
+    if (clientWorkDate) {
+        workDate = clientWorkDate;
+    } else {
+        const today = new Date();
+        workDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    }
 
     try {
         let workDay = await WorkDay.findOne({ workDate, userId });
         
         if (!workDay) {
+            const today = new Date();
             const dayStartTime = `${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
             workDay = await WorkDay.create({
                 userId,
@@ -115,9 +124,11 @@ export const getTodayWorkDay = async (req, res) => {
 
 export const endWorkDay = async (req, res) => {
     const userId = req.userId;
+    const { workDate: clientWorkDate, dayEndTime: clientEndTime } = req.body;
+    
     const today = new Date();
-    const workDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    const dayEndTime = `${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
+    const workDate = clientWorkDate || `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const dayEndTime = clientEndTime || `${String(today.getHours()).padStart(2, '0')}:${String(today.getMinutes()).padStart(2, '0')}`;
 
     try {
         const updatedWorkDay = await WorkDay.findOneAndUpdate(
