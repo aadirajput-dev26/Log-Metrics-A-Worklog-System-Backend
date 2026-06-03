@@ -148,10 +148,19 @@ export const checkUsername = async (req, res) => {
 }
 
 export const setUsername = async (req, res) => {
-    const { userName , email } = req.body;
+    const { userName, email } = req.body;
     try {
-        if (!userName || !email) {
+        if (!userName) {
             return res.status(400).json({ success: false, message: "Username is required" });
+        }
+
+        // Validate username format
+        if (!/^[A-Za-z0-9_-]+$/.test(userName)) {
+            return res.status(400).json({ success: false, message: "Username can only contain letters, numbers, hyphens, and underscores" });
+        }
+
+        if (userName.length < 3) {
+            return res.status(400).json({ success: false, message: "Username must be at least 3 characters long" });
         }
         
         // First check if username is taken
@@ -159,10 +168,23 @@ export const setUsername = async (req, res) => {
         if (existingUsername) {
             return res.status(400).json({ success: false, message: "Username is already taken" });
         }
+
+        // Determine which email to use: from body (for unauthenticated) or from authenticated user
+        let userEmail = email;
+        if (!userEmail && req.userId) {
+            const user = await User.findById(req.userId);
+            if (user) {
+                userEmail = user.email;
+            }
+        }
+
+        if (!userEmail) {
+            return res.status(400).json({ success: false, message: "Email is required" });
+        }
         
         // Update user
         const updatedUser = await User.findOneAndUpdate(
-            { email },
+            { email: userEmail },
             { $set: { userName } },
             { new: true }
         );
