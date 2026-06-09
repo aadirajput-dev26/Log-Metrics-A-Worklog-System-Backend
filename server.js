@@ -25,6 +25,7 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     "https://log-metrics.vercel.app",
+    "https://log-metrics.wowdev.in",
     "http://localhost:3000",
     "*"
   ],
